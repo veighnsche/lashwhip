@@ -1,8 +1,14 @@
 {
   "name": "@workspace/ui",
   "version": "0.0.0",
-  "type": "module",
   "private": true,
+  "type": "module",
+  "exports": {
+    "./globals.css": "./src/styles/globals.css",
+    "./lib/*": "./src/lib/*.ts",
+    "./components/*": "./src/components/*.tsx",
+    "./hooks/*": "./src/hooks/*.ts"
+  },
   "scripts": {
     "lint": "eslint",
     "format": "vp fmt \"**/*.{ts,tsx}\"",
@@ -43,11 +49,5 @@
     "tailwindcss": "^4",
     "typescript": "~6",
     "typescript-eslint": "^8"
-  },
-  "exports": {
-    "./globals.css": "./src/styles/globals.css",
-    "./lib/*": "./src/lib/*.ts",
-    "./components/*": "./src/components/*.tsx",
-    "./hooks/*": "./src/hooks/*.ts"
   }
 }

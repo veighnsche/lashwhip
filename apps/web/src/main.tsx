@@ -6,7 +6,7 @@ import { App } from "./App.tsx"
 import { ThemeProvider } from "@/components/theme-provider.tsx"
 import { TooltipProvider } from "@workspace/ui/components/tooltip"
 
-createRoot(document.getElementById("root")!).render(
+createRoot(document.querySelector("#root")!).render(
   <StrictMode>
     <ThemeProvider>
       <TooltipProvider>

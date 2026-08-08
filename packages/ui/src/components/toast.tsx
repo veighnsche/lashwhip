@@ -6,12 +6,12 @@ import { Toast as ToastPrimitive } from "@base-ui/react/toast"
 import { cn } from "@workspace/ui/lib/utils"
 import { Button } from "@workspace/ui/components/button"
 import {
-  XIcon,
   CircleCheckIcon,
   InfoIcon,
-  TriangleAlertIcon,
-  OctagonXIcon,
   Loader2Icon,
+  OctagonXIcon,
+  TriangleAlertIcon,
+  XIcon,
 } from "lucide-react"
 
 const toast = ToastPrimitive.createToastManager()
@@ -209,8 +209,8 @@ function Toaster({
   )
 }
 
-const createToastManager = ToastPrimitive.createToastManager
-const useToastManager = ToastPrimitive.useToastManager
+const { createToastManager } = ToastPrimitive
+const { useToastManager } = ToastPrimitive
 
 export {
   Toaster,

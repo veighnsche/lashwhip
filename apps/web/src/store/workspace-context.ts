@@ -1,6 +1,6 @@
 import { createContext } from "react"
-import type { Project, Conversation } from "../types/workspace"
-import { MOCK_PROJECTS, MOCK_CONVERSATIONS } from "../data/mock-workspace"
+import type { Conversation, Project } from "../types/workspace"
+import { MOCK_CONVERSATIONS, MOCK_PROJECTS } from "../data/mock-workspace"
 
 export interface WorkspaceStore {
   projects: Project[]
@@ -42,7 +42,7 @@ const now = () => new Date().toISOString()
 
 export function reducer(state: StateData, action: Action): StateData {
   switch (action.type) {
-    case "CREATE_PROJECT":
+    case "CREATE_PROJECT": {
       return {
         ...state,
         projects: [
@@ -50,16 +50,18 @@ export function reducer(state: StateData, action: Action): StateData {
           { id: `proj-${Date.now()}`, name: action.name, createdAt: now() },
         ],
       }
+    }
 
-    case "RENAME_PROJECT":
+    case "RENAME_PROJECT": {
       return {
         ...state,
         projects: state.projects.map((p) =>
           p.id === action.id ? { ...p, name: action.name } : p
         ),
       }
+    }
 
-    case "DELETE_PROJECT":
+    case "DELETE_PROJECT": {
       return {
         ...state,
         projects: state.projects.filter((p) => p.id !== action.id),
@@ -67,25 +69,26 @@ export function reducer(state: StateData, action: Action): StateData {
           c.projectId === action.id ? { ...c, projectId: undefined } : c
         ),
       }
+    }
 
     case "CREATE_CONVERSATION": {
       const newConversation: Conversation = {
-        id: `conv-${Date.now()}`,
-        title: "New Conversation",
-        projectId: action.projectId,
-        pinned: false,
         archived: false,
+        id: `conv-${Date.now()}`,
+        pinned: false,
+        projectId: action.projectId,
+        title: "New Conversation",
         unread: false,
         updatedAt: now(),
       }
       return {
         ...state,
-        conversations: [...state.conversations, newConversation],
         activeConversationId: newConversation.id,
+        conversations: [...state.conversations, newConversation],
       }
     }
 
-    case "RENAME_CONVERSATION":
+    case "RENAME_CONVERSATION": {
       return {
         ...state,
         conversations: state.conversations.map((c) =>
@@ -94,6 +97,7 @@ export function reducer(state: StateData, action: Action): StateData {
             : c
         ),
       }
+    }
 
     case "DELETE_CONVERSATION": {
       const remaining = state.conversations.filter((c) => c.id !== action.id)
@@ -103,34 +107,37 @@ export function reducer(state: StateData, action: Action): StateData {
       }
       return {
         ...state,
-        conversations: remaining,
         activeConversationId: nextActive,
+        conversations: remaining,
       }
     }
 
-    case "PIN_CONVERSATION":
+    case "PIN_CONVERSATION": {
       return {
         ...state,
         conversations: state.conversations.map((c) =>
           c.id === action.id ? { ...c, pinned: !c.pinned } : c
         ),
       }
+    }
 
-    case "ARCHIVE_CONVERSATION":
+    case "ARCHIVE_CONVERSATION": {
       return {
         ...state,
         conversations: state.conversations.map((c) =>
           c.id === action.id ? { ...c, archived: !c.archived } : c
         ),
       }
+    }
 
-    case "MARK_UNREAD_CONVERSATION":
+    case "MARK_UNREAD_CONVERSATION": {
       return {
         ...state,
         conversations: state.conversations.map((c) =>
           c.id === action.id ? { ...c, unread: !c.unread } : c
         ),
       }
+    }
 
     case "SET_ACTIVE_CONVERSATION": {
       if (action.id === null) {
@@ -141,20 +148,21 @@ export function reducer(state: StateData, action: Action): StateData {
       )
       return {
         ...state,
-        conversations: updatedConversations,
         activeConversationId: action.id,
+        conversations: updatedConversations,
       }
     }
 
-    default:
+    default: {
       return state
+    }
   }
 }
 
 export const initialState: StateData = {
-  projects: MOCK_PROJECTS,
-  conversations: MOCK_CONVERSATIONS,
   activeConversationId: MOCK_CONVERSATIONS[0]?.id ?? null,
+  conversations: MOCK_CONVERSATIONS,
+  projects: MOCK_PROJECTS,
 }
 
 export const WorkspaceContext = createContext<WorkspaceStore | undefined>(

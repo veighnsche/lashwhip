@@ -5,9 +5,9 @@ import type { TooltipValueType } from "recharts"
 import { cn } from "@workspace/ui/lib/utils"
 
 // Format: { THEME_NAME: CSS_SELECTOR }
-const THEMES = { light: "", dark: ".dark" } as const
+const THEMES = { dark: ".dark", light: "" } as const
 
-const INITIAL_DIMENSION = { width: 320, height: 200 } as const
+const INITIAL_DIMENSION = { height: 200, width: 320 } as const
 type TooltipNameType = number | string
 
 export type ChartConfig = Record<
@@ -21,7 +21,7 @@ export type ChartConfig = Record<
   )
 >
 
-type ChartContextProps = {
+interface ChartContextProps {
   config: ChartConfig
 }
 
@@ -55,7 +55,7 @@ function ChartContainer({
   }
 }) {
   const uniqueId = React.useId()
-  const chartId = `chart-${id ?? uniqueId.replace(/:/g, "")}`
+  const chartId = `chart-${id ?? uniqueId.replaceAll(/:/g, "")}`
 
   return (
     <ChartContext.Provider value={{ config }}>
@@ -84,7 +84,7 @@ const ChartStyle = ({ id, config }: { id: string; config: ChartConfig }) => {
     ([, config]) => config.theme ?? config.color
   )
 
-  if (!colorConfig.length) {
+  if (colorConfig.length === 0) {
     return null
   }
 
@@ -193,7 +193,7 @@ function ChartTooltipContent({
         className
       )}
     >
-      {!nestLabel ? tooltipLabel : null}
+      {nestLabel ? null : tooltipLabel}
       <div className="grid gap-1.5">
         {payload
           .filter((item) => item.type !== "none")
@@ -223,10 +223,10 @@ function ChartTooltipContent({
                             "shrink-0 rounded-[2px] border-(--color-border) bg-(--color-bg)",
                             {
                               "h-2.5 w-2.5": indicator === "dot",
-                              "w-1": indicator === "line",
+                              "my-0.5": nestLabel && indicator === "dashed",
                               "w-0 border-[1.5px] border-dashed bg-transparent":
                                 indicator === "dashed",
-                              "my-0.5": nestLabel && indicator === "dashed",
+                              "w-1": indicator === "line",
                             }
                           )}
                           style={
@@ -331,7 +331,7 @@ function getPayloadConfigFromPayload(
   key: string
 ) {
   if (typeof payload !== "object" || payload === null) {
-    return undefined
+    return
   }
 
   const payloadPayload =
@@ -347,15 +347,13 @@ function getPayloadConfigFromPayload(
     key in payload &&
     typeof payload[key as keyof typeof payload] === "string"
   ) {
-    configLabelKey = payload[key as keyof typeof payload] as string
+    configLabelKey = payload[key as keyof typeof payload]
   } else if (
     payloadPayload &&
     key in payloadPayload &&
     typeof payloadPayload[key as keyof typeof payloadPayload] === "string"
   ) {
-    configLabelKey = payloadPayload[
-      key as keyof typeof payloadPayload
-    ] as string
+    configLabelKey = payloadPayload[key as keyof typeof payloadPayload]
   }
 
   return configLabelKey in config ? config[configLabelKey] : config[key]

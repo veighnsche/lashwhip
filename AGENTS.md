@@ -88,3 +88,35 @@ https://ui.shadcn.com/llms.txt
 -
 
 <!--SHADCN UI STOP-->
+
+<!--LLM CODE REASONABILITY START-->
+
+# Guidelines for Writing LLM-Optimized Code
+
+To ensure code in this codebase is as easy to reason about, parse, and modify as possible for Language Models (including smaller/faster models):
+
+1. **Explicit Return Types & Contracts**
+   - Provide explicit return types on exported functions, hooks, and reducer handlers.
+   - Prefer named interfaces or type aliases over inline object literals for component props.
+
+2. **Flat Control Flow (Guard Clauses)**
+   - Use early returns (`if (!condition) return`) to handle edge/null cases first.
+   - Avoid deeply nested `if/else` blocks; keep the primary logic at the outermost scope.
+
+3. **Discriminated Unions & Exhaustive Switches**
+   - Use string literal discriminated unions for multi-state logic (actions, UI states, statuses).
+   - Use `switch` statements for state handling with exhaustive checks.
+
+4. **No Obfuscated Expressions**
+   - Avoid nested ternary expressions (`a ? b ? c : d : e`). Use `if/else` or helper variables.
+   - Avoid using ternary statements for side effects (e.g. `cond ? doA() : doB()`); use explicit `if (cond) doA(); else doB();`.
+   - Use strict equality `===` and explicit type conversions (`String(val)`, `Number(val)`).
+
+5. **Modular Components & Clean Import Aliases**
+   - Keep files small (< 250–300 lines). Break complex components into focused sub-components.
+   - Use canonical path aliases (`@/...` and `@workspace/ui/...`).
+
+6. **Deterministic Tooling Enforcement**
+   - Run `vp check --fix` before completing turns to enforce `oxfmt` formatting and `oxlint` rules automatically.
+
+<!--LLM CODE REASONABILITY END-->

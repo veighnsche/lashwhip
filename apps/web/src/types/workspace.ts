@@ -8,7 +8,7 @@ export interface Project {
 export interface Conversation {
   id: string
   title: string
-  projectId?: string // undefined if unassigned (generic)
+  projectId?: string // Undefined if unassigned (generic)
   pinned?: boolean
   archived?: boolean
   unread?: boolean
