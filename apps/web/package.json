@@ -12,6 +12,8 @@
     "preview": "vp preview"
   },
   "dependencies": {
+    "@flue/react": "^2.0.3",
+    "@flue/sdk": "^2.0.3",
     "@workspace/ui": "workspace:*",
     "lucide-react": "^1.30.0",
     "react": "^19.2.6",

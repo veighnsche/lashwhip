@@ -1,4 +1,5 @@
 {
+  "name": "flue",
   "type": "module",
   "dependencies": {
     "@flue/cli": "^2.0.3",
