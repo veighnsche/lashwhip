@@ -1,16 +1,19 @@
 // @vitest-environment jsdom
 
-import { act, createElement } from "react"
+import { act, createElement, type ReactNode } from "react"
 import { createRoot } from "react-dom/client"
 import { afterEach, beforeEach, describe, expect, it, vi } from "vite-plus/test"
 
 import { AppLayout } from "./app-layout"
 
-function renderLayout(withAuxiliaryPane = true) {
+function renderLayout(
+  withAuxiliaryPane = true,
+  auxiliaryPane: ReactNode = createElement("aside", null, "Inspector")
+) {
   const container = document.createElement("div")
   const root = createRoot(container)
   const props = {
-    auxiliaryPane: createElement("aside", null, "Inspector"),
+    auxiliaryPane,
     chatView: createElement("main", null, "Chat"),
     sidebar: createElement("nav", null, "Sidebar"),
   }
@@ -70,6 +73,17 @@ describe("AppLayout", () => {
     const { container, unmount } = renderLayout(false)
 
     expect(container.querySelector('[data-slot="auxiliary-pane"]')).toBeNull()
+
+    unmount()
+  })
+
+  it("omits the auxiliary slot when auxiliary content is null", () => {
+    const { container, unmount } = renderLayout(true, null)
+
+    expect(container.querySelector('[data-slot="auxiliary-pane"]')).toBeNull()
+    expect(
+      container.querySelector('[aria-label="Hide auxiliary pane"]')
+    ).toBeNull()
 
     unmount()
   })
