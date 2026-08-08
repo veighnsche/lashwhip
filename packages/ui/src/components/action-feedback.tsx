@@ -13,7 +13,7 @@ export interface ActionFeedbackProps extends React.HTMLAttributes<HTMLSpanElemen
   errorLabel?: React.ReactNode
   pendingLabel?: React.ReactNode
   autoResetMs?: number
-  onReset?: () => void
+  onReset: () => void
 }
 
 function renderContent(
@@ -78,7 +78,7 @@ export function ActionFeedback({
     }
 
     const timer = setTimeout(() => {
-      onReset?.()
+      onReset()
     }, autoResetMs)
 
     return () => {
