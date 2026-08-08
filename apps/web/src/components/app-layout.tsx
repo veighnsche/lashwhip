@@ -7,6 +7,14 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@workspace/ui/components/sidebar"
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+} from "@workspace/ui/components/sheet"
+import { useIsMobile } from "@workspace/ui/hooks/use-mobile"
 
 export interface AppLayoutProps {
   sidebar: React.ReactNode
@@ -19,7 +27,9 @@ export function AppLayout({
   chatView,
   sidebar,
 }: AppLayoutProps): React.JSX.Element {
+  const isMobile = useIsMobile()
   const [isAuxiliaryPaneOpen, setIsAuxiliaryPaneOpen] = React.useState(true)
+  const auxiliaryToggleId = React.useId()
   const hasAuxiliaryPane = auxiliaryPane != null
   const auxiliaryPaneLabel = isAuxiliaryPaneOpen
     ? "Hide auxiliary pane"
@@ -39,6 +49,7 @@ export function AppLayout({
             <IconButton
               aria-label={auxiliaryPaneLabel}
               icon={<PanelRightIcon />}
+              id={auxiliaryToggleId}
               size="icon-sm"
               tooltip={auxiliaryPaneLabel}
               onClick={() => {
@@ -49,14 +60,43 @@ export function AppLayout({
         </div>
         <div className="min-h-0 flex-1 overflow-y-auto">{chatView}</div>
       </main>
-      {hasAuxiliaryPane && isAuxiliaryPaneOpen && (
-        <aside
-          data-slot="auxiliary-pane"
-          className="fixed inset-y-0 right-0 z-20 w-72 max-w-[calc(100vw-3rem)] shrink-0 overflow-y-auto border-l bg-background md:static md:z-auto md:w-72 md:max-w-none"
-        >
-          {auxiliaryPane}
-        </aside>
-      )}
+      {hasAuxiliaryPane &&
+        (isMobile ? (
+          <Sheet
+            open={isAuxiliaryPaneOpen}
+            onOpenChange={(open) => {
+              setIsAuxiliaryPaneOpen(open)
+              if (!open) {
+                queueMicrotask(() => {
+                  document.getElementById(auxiliaryToggleId)?.focus()
+                })
+              }
+            }}
+          >
+            <SheetContent
+              data-slot="auxiliary-pane"
+              className="w-72 max-w-[calc(100vw-3rem)] overflow-y-auto p-0 [&>button]:hidden"
+              side="right"
+            >
+              <SheetHeader className="sr-only">
+                <SheetTitle>Auxiliary pane</SheetTitle>
+                <SheetDescription>
+                  Displays the auxiliary pane.
+                </SheetDescription>
+              </SheetHeader>
+              {auxiliaryPane}
+            </SheetContent>
+          </Sheet>
+        ) : (
+          isAuxiliaryPaneOpen && (
+            <aside
+              data-slot="auxiliary-pane"
+              className="hidden w-72 shrink-0 overflow-y-auto border-l bg-background md:block"
+            >
+              {auxiliaryPane}
+            </aside>
+          )
+        ))}
     </SidebarProvider>
   )
 }
