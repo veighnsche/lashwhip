@@ -8,10 +8,10 @@ Docs are local at `node_modules/vite-plus/docs` or online at https://viteplus.de
 
 ## Review Checklist
 
-- [ ] Run `vp install` after pulling remote changes and before getting started.
-- [ ] Run `vp check` and `vp test` to format, lint, type check and test changes.
-- [ ] Check if there are `vite.config.ts` tasks or `package.json` scripts necessary for validation, run via `vp run <script>`.
-- [ ] If setup, runtime, or package-manager behavior looks wrong, run `vp env doctor` and include its output when asking for help.
+- [x] Run `vp install` after pulling remote changes and before getting started.
+- [x] Run `vp check` and `vp test` to format, lint, type check and test changes.
+- [x] Check if there are `vite.config.ts` tasks or `package.json` scripts necessary for validation, run via `vp run <script>`.
+- [x] If setup, runtime, or package-manager behavior looks wrong, run `vp env doctor` and include its output when asking for help.
 
 <!--VITE PLUS END-->
 
@@ -64,6 +64,27 @@ Docs are local at `node_modules/vite-plus/docs` or online at https://viteplus.de
 
 - [Cloudflare](https://flueframework.com/docs/guide/cloudflare-target/)
 - [Node.js](https://flueframework.com/docs/guide/node-target/)
--
 
 <!--FLUE END-->
+
+<!--SHADCN UI START-->
+
+https://ui.shadcn.com/llms.txt
+
+# shadcn/ui
+
+> shadcn/ui is a collection of beautifully-designed, accessible components and a code distribution platform. It is built with TypeScript, Tailwind CSS, and Radix UI primitives. It supports multiple frameworks including Next.js, Vite, Remix, Astro, and more. Open Source. Open Code. AI-Ready. It also comes with a command-line tool to install and manage components and a registry system to publish and distribute code.
+
+## Overview
+
+- [Introduction](https://ui.shadcn.com/docs): Core principles—Open Code, Composition, Distribution, Beautiful Defaults, and AI-Ready design.
+- [CLI](https://ui.shadcn.com/docs/cli): Command-line tool for installing and managing components.
+- [components.json](https://ui.shadcn.com/docs/components-json): Configuration file for customizing the CLI and component installation.
+- [Theming](https://ui.shadcn.com/docs/theming): Guide to customizing colors, typography, and design tokens.
+- [Typeset](https://ui.shadcn.com/docs/typeset): Typography for rendered markdown, from blog posts to streaming chat. One CSS file that scales from its container and reads your theme.
+- [Changelog](https://ui.shadcn.com/docs/changelog): Release notes and version history.
+- [Skills](https://ui.shadcn.com/docs/skills): Deep shadcn/ui knowledge for AI assistants like Claude Code.
+- [Directory](https://ui.shadcn.com/docs/directory): Community registries built into the CLI.
+-
+
+<!--SHADCN UI STOP-->
