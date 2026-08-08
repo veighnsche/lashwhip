@@ -52,7 +52,7 @@ export function AppLayout({
       {hasAuxiliaryPane && isAuxiliaryPaneOpen && (
         <aside
           data-slot="auxiliary-pane"
-          className="w-72 shrink-0 overflow-y-auto border-l"
+          className="fixed inset-y-0 right-0 z-20 w-72 max-w-[calc(100vw-3rem)] shrink-0 overflow-y-auto border-l bg-background md:static md:z-auto md:w-72 md:max-w-none"
         >
           {auxiliaryPane}
         </aside>

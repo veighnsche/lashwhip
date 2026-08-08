@@ -63,6 +63,11 @@ describe("AppLayout", () => {
     expect(sidebar?.className).toContain("shrink-0")
     expect(chatView?.className).toContain("flex-1")
     expect(chatView?.className).toContain("min-w-0")
+    expect(auxiliaryPane?.className).toContain("fixed")
+    expect(auxiliaryPane?.className).toContain("right-0")
+    expect(auxiliaryPane?.className).toContain("max-w-[calc(100vw-3rem)]")
+    expect(auxiliaryPane?.className).toContain("md:static")
+    expect(auxiliaryPane?.className).toContain("md:w-72")
     expect(auxiliaryPane?.className).toContain("w-72")
     expect(auxiliaryPane?.className).toContain("shrink-0")
 
