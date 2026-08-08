@@ -11,6 +11,7 @@ function renderLayout(
   auxiliaryPane: ReactNode = createElement("aside", null, "Inspector")
 ) {
   const container = document.createElement("div")
+  document.body.append(container)
   const root = createRoot(container)
   const props = {
     auxiliaryPane,
@@ -45,10 +46,15 @@ describe("AppLayout", () => {
         removeEventListener: vi.fn(),
       }))
     )
+    Object.defineProperty(window, "innerWidth", {
+      configurable: true,
+      value: 1024,
+    })
   })
 
   afterEach(() => {
     vi.unstubAllGlobals()
+    document.body.replaceChildren()
   })
 
   it("places supplied content in the three fixed layout slots", () => {
@@ -63,11 +69,8 @@ describe("AppLayout", () => {
     expect(sidebar?.className).toContain("shrink-0")
     expect(chatView?.className).toContain("flex-1")
     expect(chatView?.className).toContain("min-w-0")
-    expect(auxiliaryPane?.className).toContain("fixed")
-    expect(auxiliaryPane?.className).toContain("right-0")
-    expect(auxiliaryPane?.className).toContain("max-w-[calc(100vw-3rem)]")
-    expect(auxiliaryPane?.className).toContain("md:static")
-    expect(auxiliaryPane?.className).toContain("md:w-72")
+    expect(auxiliaryPane?.className).toContain("hidden")
+    expect(auxiliaryPane?.className).toContain("md:block")
     expect(auxiliaryPane?.className).toContain("w-72")
     expect(auxiliaryPane?.className).toContain("shrink-0")
 
@@ -122,6 +125,56 @@ describe("AppLayout", () => {
     expect(
       container.querySelector('[aria-label="Show auxiliary pane"]')
     ).not.toBeNull()
+
+    unmount()
+  })
+
+  it("uses a focus-managed right Sheet for the mobile auxiliary pane", async () => {
+    Object.defineProperty(window, "innerWidth", {
+      configurable: true,
+      value: 375,
+    })
+    const { container, unmount } = renderLayout()
+    await act(async () => {})
+    const auxiliaryToggle = container.querySelector<HTMLButtonElement>(
+      '[aria-label="Hide auxiliary pane"]'
+    )
+    if (!auxiliaryToggle) {
+      throw new Error("Expected the auxiliary pane toggle.")
+    }
+
+    act(() => {
+      auxiliaryToggle.click()
+    })
+    const trigger = container.querySelector<HTMLButtonElement>(
+      '[aria-label="Show auxiliary pane"]'
+    )
+    if (!trigger) {
+      throw new Error("Expected the auxiliary pane trigger.")
+    }
+
+    act(() => {
+      trigger.click()
+    })
+    await act(async () => {
+      await new Promise((resolve) => setTimeout(resolve, 0))
+    })
+    const sheet = document.querySelector<HTMLElement>('[role="dialog"]')
+    const overlay = document.querySelector('[data-slot="sheet-overlay"]')
+
+    expect(sheet?.getAttribute("data-side")).toBe("right")
+    expect(overlay).not.toBeNull()
+    expect(sheet?.contains(document.activeElement)).toBe(true)
+
+    act(() => {
+      document.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape" }))
+    })
+    await act(async () => {
+      await new Promise((resolve) => setTimeout(resolve, 0))
+    })
+
+    expect(document.querySelector('[role="dialog"]')).toBeNull()
+    expect(document.activeElement).toBe(trigger)
 
     unmount()
   })
