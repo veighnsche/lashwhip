@@ -118,7 +118,7 @@ export const MOCK_MESSAGES: Record<string, Message[]> = {
     },
     {
       content:
-        'Here is the ActionFeedback primitive interface:\n\n```ts\nexport interface ActionFeedbackProps {\n  state: "idle" | "pending" | "success" | "error";\n  idleLabel: React.ReactNode;\n  successLabel?: React.ReactNode;\n  errorLabel?: React.ReactNode;\n  autoResetMs?: number;\n}\n```',
+        'Here is the ActionFeedback primitive interface:\n\n```ts\nexport interface ActionFeedbackProps {\n  state: "idle" | "pending" | "success" | "error";\n  idleLabel: React.ReactNode;\n  successLabel?: React.ReactNode;\n  errorLabel?: React.ReactNode;\n  autoResetMs?: number;\n  onReset: () => void;\n}\n```',
       conversationId: "conv-4",
       id: "msg-4",
       role: "assistant",

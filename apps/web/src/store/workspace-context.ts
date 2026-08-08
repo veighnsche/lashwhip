@@ -134,7 +134,7 @@ export function reducer(state: StateData, action: Action): StateData {
       return {
         ...state,
         conversations: state.conversations.map((c) =>
-          c.id === action.id ? { ...c, unread: !c.unread } : c
+          c.id === action.id ? { ...c, unread: true } : c
         ),
       }
     }
