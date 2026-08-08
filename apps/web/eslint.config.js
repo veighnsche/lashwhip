@@ -17,6 +17,9 @@ export default defineConfig([
     files: ["**/*.{ts,tsx}"],
     languageOptions: {
       globals: globals.browser,
+      parserOptions: {
+        tsconfigRootDir: import.meta.dirname,
+      },
     },
   },
 ])
